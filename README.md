@@ -1,5 +1,5 @@
 # homebrew-tap
-My own homebrew tap. Currently featuring `subversion18` (copied from `versions/subversion18`) with new unicode-path option, since this option was removed from `versions/subversion18`. 
+My own homebrew tap. Currently featuring `subversion18` (based on https://github.com/Homebrew/homebrew-versions/blob/master/subversion18.rb) with new unicode-path option, since this option was removed from `versions/subversion18`. 
 *Caution:* experimental and unsupported!
 
 ## Usage
