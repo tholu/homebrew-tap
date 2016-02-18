@@ -20,12 +20,14 @@ class Subversion18 < Formula
   deprecated_option "java" => "with-java"
   deprecated_option "perl" => "with-perl"
   deprecated_option "ruby" => "with-ruby"
+  deprecated_option "unicode-path" => "with-unicode-path"
 
   option :universal
   option "with-java", "Build Java bindings"
   option "with-perl", "Build Perl bindings"
   option "with-ruby", "Build Ruby bindings"
   option "with-gpg-agent", "Build with support for GPG Agent"
+  option "with-unicode-path", "Build with support for OS X UTF-8-MAC filename"
 
   resource "serf" do
     url "https://serf.googlecode.com/svn/src_releases/serf-1.3.8.tar.bz2", :using => :curl
@@ -67,6 +69,14 @@ class Subversion18 < Formula
     fails_with :clang do
       build 318
       cause "core.c:1: error: bad value (native) for -march= switch"
+    end
+  end
+
+  # Patch for Subversion handling of OS X UTF-8-MAC filename.
+  if build.with? "unicode-path"
+    patch :p0 do
+      url "https://gist.githubusercontent.com/tholu/fb5d30c586e33b53ecba/raw/a266b1aa01f95cdc38fcedda4c6bce253dfb58c2/svn_1.8.x_darwin_unicode_precomp.patch"
+      sha256 "2eaee628e3161bce4b1697660281cab30f42265369bfa7074ea435e441d543e7"
     end
   end
 
@@ -254,6 +264,16 @@ class Subversion18 < Formula
         You may need to link the Java bindings into the Java Extensions folder:
           sudo mkdir -p /Library/Java/Extensions
           sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions/libsvnjavahl-1.dylib
+      EOS
+    end
+
+     if build.with? "unicode-path"
+      s += <<-EOS.undent
+        This unicode-path version implements a hack to deal with composed/decomposed
+        unicode handling on Mac OS X which is different from linux and windows.
+        It is borrowed from http://subversion.tigris.org/issues/show_bug.cgi?id=2464 and
+        _WILL_ break some setups. Please be sure you understand what you
+        are asking for when you install this version.
       EOS
     end
 
