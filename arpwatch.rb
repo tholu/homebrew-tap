@@ -35,6 +35,6 @@ class Arpwatch < Formula
   end
 
   test do
-    system "#{sbin}/arpwatch", "--version"
+    assert_match "#{version}", shell_output("#{sbin}/arpwatch --version")
   end
 end
