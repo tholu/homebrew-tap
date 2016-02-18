@@ -1,5 +1,5 @@
 class Arpwatch < Formula
-  desc "computer software tool for monitoring Address Resolution Protocol traffic"
+  desc "tool for monitoring ARP traffic"
   homepage "http://ee.lbl.gov/"
   url "ftp://ftp.ee.lbl.gov/arpwatch-2.1a15.tar.gz"
   sha256 "c1df9737e208a96a61fa92ddad83f4b4d9be66f8992f3c917e9edf4b05ff5898"
@@ -35,6 +35,6 @@ class Arpwatch < Formula
   end
 
   test do
-    assert_match /#{version}/, shell_output("#{sbin}/arpwatch --version")
+    system "#{sbin}/arpwatch", "--version"
   end
 end
