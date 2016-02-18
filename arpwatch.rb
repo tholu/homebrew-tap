@@ -1,8 +1,10 @@
 class Arpwatch < Formula
   desc "arpwatch is a computer software tool for monitoring Address Resolution Protocol traffic on a computer network."
   url "ftp://ftp.ee.lbl.gov/arpwatch-2.1a15.tar.gz"
-  homepage "http://http://ee.lbl.gov/"
+  homepage "http://ee.lbl.gov/"
   sha256 "c1df9737e208a96a61fa92ddad83f4b4d9be66f8992f3c917e9edf4b05ff5898"
+
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
