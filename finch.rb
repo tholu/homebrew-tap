@@ -3,7 +3,7 @@ require 'formula'
 class Finch < Formula
   homepage 'http://developer.pidgin.im/wiki/Using%20Finch'
   url 'http://sourceforge.net/projects/pidgin/files/Pidgin/2.11.0/pidgin-2.11.0.tar.bz2'
-  sha1 '9738a424ac9f6da8b68ebf11af00c55cafd6b4d2'
+  sha256 'f72613440586da3bdba6d58e718dce1b2c310adf8946de66d8077823e57b3333'
 
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
