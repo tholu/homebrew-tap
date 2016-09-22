@@ -23,6 +23,7 @@ class Finch < Formula
     #   * Bonjour (avahi)
     #   * Communicating with other programs (d-bus)
     #   * Perl scripting
+    #   * TCL scripting
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-gtkui",
@@ -31,7 +32,8 @@ class Finch < Formula
                           "--disable-meanwhile",
                           "--disable-avahi",
                           "--disable-dbus",
-                          "--disable-perl"
+                          "--disable-perl",
+                          "--disable-tcl"
     system "make install"
   end
 end
