@@ -1,20 +1,14 @@
 class Subversion18 < Formula
   desc "Version control system"
   homepage "https://subversion.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.13.tar.bz2"
-  mirror "https://archive.apache.org/dist/subversion/subversion-1.8.13.tar.bz2"
-  sha256 "1099cc68840753b48aedb3a27ebd1e2afbcc84ddb871412e5d500e843d607579"
+  url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.16.tar.bz2"
+  mirror "https://archive.apache.org/dist/subversion/subversion-1.8.16.tar.bz2"
+  sha256 "f18f6e8309270982135aae54d96958f9ca6b93f8a4e746dd634b1b5b84edb346"
 
   bottle do
-    sha256 "f9a579aa4740ef94dda7c2365a9185cd6e1b56b1407790cdc37784910ef8a30b" => :el_capitan
-    sha256 "662ce135a546445baee8341e580f01547fd2243359c9566ed3af1af6aa881b95" => :yosemite
-    sha256 "da9215845e5f904a3656562ae4bc54c499d1c692453828f1a3c9eb3cdeda51cd" => :mavericks
-  end
-
-  devel do
-    url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.0-rc3.tar.bz2"
-    mirror "https://archive.apache.org/dist/subversion/subversion-1.9.0-rc3.tar.bz2"
-    sha256 "c49432a1a2e83fa3babd7a0602d207c8c11feb1d0660828609710f101737fa6d"
+    sha256 "c8e084464d3a30b65381af6cb2b225dd5511cb0f074a67a2fe6c89d66a1fae30" => :el_capitan
+    sha256 "0d80b06e7c27264ff0c533ad93f9a4ff0c9702d50740c87862d1368fe2c70bc5" => :yosemite
+    sha256 "2514644016e8f2a8feb77fc31b3620af91c3310cf501b8e402e3b972eef98f42" => :mavericks
   end
 
   deprecated_option "java" => "with-java"
@@ -35,7 +29,17 @@ class Subversion18 < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on :apr => :build
+
+  # macOS Sierra ships the APR libraries & headers, but has removed the
+  # apr-1-config & apu-1-config executables which serf demands to find
+  # those elements. We may need to adopt a broader solution if this problem
+  # expands, but currently subversion is the only breakage as a result.
+  if MacOS.version >= :sierra
+    depends_on "apr-util"
+    depends_on "apr"
+  else
+    depends_on :apr => :build
+  end
 
   # Always build against Homebrew versions instead of system versions for consistency.
   depends_on "sqlite"
@@ -96,7 +100,7 @@ class Subversion18 < Formula
                 CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}
                 OPENSSL=#{Formula["openssl"].opt_prefix}]
 
-      unless MacOS::CLT.installed?
+      if MacOS.version >= :sierra || !MacOS::CLT.installed?
         args << "APR=#{Formula["apr"].opt_prefix}"
         args << "APU=#{Formula["apr-util"].opt_prefix}"
       end
@@ -137,7 +141,7 @@ class Subversion18 < Formula
     args << "--enable-javahl" << "--without-jikes" if build.with? "java"
     args << "--without-gpg-agent" if build.without? "gpg-agent"
 
-    if MacOS::CLT.installed?
+    if MacOS::CLT.installed? && MacOS.version < :sierra
       args << "--with-apr=/usr"
       args << "--with-apr-util=/usr"
     else
