@@ -23,11 +23,6 @@ class Subversion18 < Formula
   option "with-gpg-agent", "Build with support for GPG Agent"
   option "with-unicode-path", "Build with support for OS X UTF-8-MAC filename"
 
-  resource "serf" do
-    url "https://archive.apache.org/dist/serf/serf-1.3.8.tar.bz2", :using => :curl
-    sha256 "e0500be065dbbce490449837bb2ab624e46d64fc0b090474d9acaa87c82b2590"
-  end
-
   depends_on "pkg-config" => :build
 
   # macOS Sierra ships the APR libraries & headers, but has removed the
@@ -43,7 +38,7 @@ class Subversion18 < Formula
 
   # Always build against Homebrew versions instead of system versions for consistency.
   depends_on "sqlite"
-  depends_on :python => :optional
+  depends_on "python" => :optional
 
   # Bindings require swig
   depends_on "swig" if build.with?("perl") || build.with?("python") || build.with?("ruby")
@@ -55,6 +50,11 @@ class Subversion18 < Formula
   # Other optional dependencies
   depends_on "gpg-agent" => :optional
   depends_on :java => :optional
+
+  resource "serf" do
+    url "https://archive.apache.org/dist/serf/serf-1.3.8.tar.bz2", :using => :curl
+    sha256 "e0500be065dbbce490449837bb2ab624e46d64fc0b090474d9acaa87c82b2590"
+  end
 
   # Fix #23993 by stripping flags swig can't handle from SWIG_CPPFLAGS
   # Prevent "-arch ppc" from being pulled in from Perl's $Config{ccflags}
@@ -116,8 +116,8 @@ class Subversion18 < Formula
 
       unless build.universal?
         opoo "A non-Universal Java build was requested."
-        puts <<-EOS.undent
-        To use Java bindings with various Java IDEs, you might need a universal build:
+        puts <<~EOS
+          To use Java bindings with various Java IDEs, you might need a universal build:
           `brew install subversion --universal --java`
         EOS
       end
@@ -229,13 +229,13 @@ class Subversion18 < Formula
   end
 
   def caveats
-    s = <<-EOS.undent
+    s = <<~EOS
       svntools have been installed to:
         #{opt_libexec}
     EOS
 
     if build.with? "perl"
-      s += <<-EOS.undent
+      s += <<~EOS
 
         The perl bindings are located in various subdirectories of:
           #{prefix}/Library/Perl
@@ -243,7 +243,7 @@ class Subversion18 < Formula
     end
 
     if build.with? "ruby"
-      s += <<-EOS.undent
+      s += <<~EOS
 
         You may need to add the Ruby bindings to your RUBYLIB from:
           #{HOMEBREW_PREFIX}/lib/ruby
@@ -251,7 +251,7 @@ class Subversion18 < Formula
     end
 
     if build.with? "java"
-      s += <<-EOS.undent
+      s += <<~EOS
 
         You may need to link the Java bindings into the Java Extensions folder:
           sudo mkdir -p /Library/Java/Extensions
@@ -259,8 +259,8 @@ class Subversion18 < Formula
       EOS
     end
 
-     if build.with? "unicode-path"
-      s += <<-EOS.undent
+    if build.with? "unicode-path"
+      s += <<~EOS
         This unicode-path version implements a hack to deal with composed/decomposed
         unicode handling on Mac OS X which is different from linux and windows.
         It is borrowed from http://subversion.tigris.org/issues/show_bug.cgi?id=2464 and
