@@ -25,16 +25,9 @@ class Subversion18 < Formula
 
   depends_on "pkg-config" => :build
 
-  # macOS Sierra ships the APR libraries & headers, but has removed the
-  # apr-1-config & apu-1-config executables which serf demands to find
-  # those elements. We may need to adopt a broader solution if this problem
-  # expands, but currently subversion is the only breakage as a result.
-  if MacOS.version >= :sierra
-    depends_on "apr-util"
-    depends_on "apr"
-  else
-    depends_on :apr => :build
-  end
+  # Removed the Mac OS Sierra version switch to do deprecated :apr
+  depends_on "apr-util"
+  depends_on "apr"
 
   # Always build against Homebrew versions instead of system versions for consistency.
   depends_on "sqlite"
@@ -52,7 +45,7 @@ class Subversion18 < Formula
   depends_on :java => :optional
 
   resource "serf" do
-    url "https://archive.apache.org/dist/serf/serf-1.3.8.tar.bz2", :using => :curl
+    url "https://archive.apache.org/dist/serf/serf-1.3.8.tar.bz2"
     sha256 "e0500be065dbbce490449837bb2ab624e46d64fc0b090474d9acaa87c82b2590"
   end
 
