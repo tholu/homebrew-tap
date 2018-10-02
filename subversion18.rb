@@ -20,7 +20,7 @@ class Subversion18 < Formula
   option "with-java", "Build Java bindings"
   option "with-perl", "Build Perl bindings"
   option "with-ruby", "Build Ruby bindings"
-  option "with-gpg-agent", "Build with support for GPG Agent"
+  option "with-gnupg", "Build with support for GPG Agent"
   option "with-unicode-path", "Build with support for OS X UTF-8-MAC filename"
 
   depends_on "pkg-config" => :build
@@ -41,7 +41,7 @@ class Subversion18 < Formula
   depends_on "openssl"
 
   # Other optional dependencies
-  depends_on "gpg-agent" => :optional
+  depends_on "gnupg" => :optional
   depends_on :java => :optional
 
   resource "serf" do
@@ -132,7 +132,7 @@ class Subversion18 < Formula
             "--without-berkeley-db"]
 
     args << "--enable-javahl" << "--without-jikes" if build.with? "java"
-    args << "--without-gpg-agent" if build.without? "gpg-agent"
+    args << "--without-gnupg" if build.without? "gnupg"
 
     if MacOS::CLT.installed? && MacOS.version < :sierra
       args << "--with-apr=/usr"
