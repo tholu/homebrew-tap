@@ -98,8 +98,8 @@ class Subversion18 < Formula
         args << "APU=#{Formula["apr-util"].opt_prefix}"
       end
 
-      scons *args
-      scons "install"
+      system "scons", *args
+      system "scons", "install"
     end
 
     if build.with? "java"
