@@ -11,11 +11,6 @@ class Subversion18 < Formula
     sha256 "2514644016e8f2a8feb77fc31b3620af91c3310cf501b8e402e3b972eef98f42" => :mavericks
   end
 
-  deprecated_option "java" => "with-java"
-  deprecated_option "perl" => "with-perl"
-  deprecated_option "ruby" => "with-ruby"
-  deprecated_option "unicode-path" => "with-unicode-path"
-
   option :universal
   option "with-java", "Build Java bindings"
   option "with-perl", "Build Perl bindings"
@@ -23,26 +18,29 @@ class Subversion18 < Formula
   option "with-gnupg", "Build with support for GPG Agent"
   option "with-unicode-path", "Build with support for OS X UTF-8-MAC filename"
 
+  deprecated_option "java" => "with-java"
+  deprecated_option "perl" => "with-perl"
+  deprecated_option "ruby" => "with-ruby"
+  deprecated_option "unicode-path" => "with-unicode-path"
+
   depends_on "pkg-config" => :build
-
-  # Removed the Mac OS Sierra version switch to do deprecated :apr
-  depends_on "apr-util"
-  depends_on "apr"
-
-  # Always build against Homebrew versions instead of system versions for consistency.
-  depends_on "sqlite"
-  depends_on "python" => :optional
-
-  # Bindings require swig
-  depends_on "swig" if build.with?("perl") || build.with?("python") || build.with?("ruby")
 
   # For Serf
   depends_on "scons" => :build
+  depends_on "apr"
+  depends_on "apr-util"
   depends_on "openssl@1.1"
+  
+  # Always build against Homebrew versions instead of system versions for consistency.
+  depends_on "sqlite"
 
   # Other optional dependencies
   depends_on "gnupg" => :optional
   depends_on :java => :optional
+  depends_on "python" => :optional
+
+  # Bindings require swig
+  depends_on "swig" if build.with?("perl") || build.with?("python") || build.with?("ruby")
 
   resource "serf" do
     url "https://www.apache.org/dyn/closer.cgi?path=serf/serf-1.3.9.tar.bz2"
