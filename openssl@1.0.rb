@@ -38,8 +38,8 @@ class OpensslAT10 < Formula
     system "make", "install", "MANDIR=#{man}", "MANSUFFIX=ssl"
 
     # Create symlinks so the libraries are found in the right places
-    ln_sf "#{HOMEBREW_PREFIX}/opt/openssl@1.0/lib/libcrypto.1.0.0.dylib", "#{HOMEBREW_PREFIX}/opt/openssl/lib/libcrypto.1.0.0.dylib"
-    ln_sf "#{HOMEBREW_PREFIX}/opt/openssl@1.0/lib/libssl.1.0.0.dylib", "#{HOMEBREW_PREFIX}/opt/openssl/lib/libssl.1.0.0.dylib"
+    lib.install_symlink "../../openssl/lib/libcrypto.1.0.0.dylib" => "libcrypto.1.0.0.dylib"
+    lib.install_symlink "../../openssl/lib/libssl.1.0.0.dylib" => "libssl.1.0.0.dylib"
   end
 
   def openssldir
