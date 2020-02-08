@@ -1,7 +1,7 @@
 # This formula tracks 1.0.2 branch of OpenSSL, not the 1.1.0 branch. With
-# `openssl` being deprecated, this formula `openssl@1.0` offers backwords
+# `openssl` being deprecated, this formula offers backwords
 # compatibility e.g. for `php@5.6`
-class OpensslAT10 < Formula
+class Openssl < Formula
   desc "SSL/TLS cryptography library"
   homepage "https://openssl.org/"
   url "https://www.openssl.org/source/openssl-1.0.2t.tar.gz"
@@ -36,10 +36,6 @@ class OpensslAT10 < Formula
     system "make"
     system "make", "test"
     system "make", "install", "MANDIR=#{man}", "MANSUFFIX=ssl"
-
-    # Create symlinks so the libraries are found in the right places
-    lib.install_symlink "../../openssl/lib/libcrypto.1.0.0.dylib" => "libcrypto.1.0.0.dylib"
-    lib.install_symlink "../../openssl/lib/libssl.1.0.0.dylib" => "libssl.1.0.0.dylib"
   end
 
   def openssldir
