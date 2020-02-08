@@ -1,6 +1,5 @@
 # This formula tracks 1.0.2 branch of OpenSSL, not the 1.1.0 branch. With
-# `openssl` being deprecated, this formula offers backwords
-# compatibility e.g. for `php@5.6`
+# `openssl` being deprecated, this formula offers backwards compatibility e.g. for `php@5.6`
 class Openssl < Formula
   desc "SSL/TLS cryptography library"
   homepage "https://openssl.org/"
