@@ -1,6 +1,6 @@
-# This formula tracks 1.0.2 branch of OpenSSL, not the 1.1.0 branch. Due to
-# significant breaking API changes in 1.1.0 other formulae will be migrated
-# across slowly, so core will ship `openssl` & `openssl@1.1` for foreseeable.
+# This formula tracks 1.0.2 branch of OpenSSL, not the 1.1.0 branch. With
+# `openssl` being deprecated, this formula `openssl@1.0` offers backwords
+# compatibility e.g. for `php@5.6`
 class OpensslAT10 < Formula
   desc "SSL/TLS cryptography library"
   homepage "https://openssl.org/"
@@ -36,6 +36,10 @@ class OpensslAT10 < Formula
     system "make"
     system "make", "test"
     system "make", "install", "MANDIR=#{man}", "MANSUFFIX=ssl"
+
+    # Create symlinks so the libraries are found in the right places
+    ln_sf "#{HOMEBREW_PREFIX}/opt/openssl@1.0/lib/libcrypto.1.0.0.dylib", "#{HOMEBREW_PREFIX}/opt/openssl/lib/libcrypto.1.0.0.dylib"
+    ln_sf "#{HOMEBREW_PREFIX}/opt/openssl@1.0/lib/libssl.1.0.0.dylib", "#{HOMEBREW_PREFIX}/opt/openssl/lib/libssl.1.0.0.dylib"
   end
 
   def openssldir
