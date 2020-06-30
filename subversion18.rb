@@ -1,7 +1,7 @@
 class Subversion18 < Formula
   desc "Version control system"
   homepage "https://subversion.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.16.tar.bz2"
+  url "https://www.apache.org/dyn/closer.lua?path=subversion/subversion-1.8.16.tar.bz2"
   mirror "https://archive.apache.org/dist/subversion/subversion-1.8.16.tar.bz2"
   sha256 "f18f6e8309270982135aae54d96958f9ca6b93f8a4e746dd634b1b5b84edb346"
 
@@ -30,7 +30,7 @@ class Subversion18 < Formula
   depends_on "apr"
   depends_on "apr-util"
   depends_on "openssl@1.1"
-  
+
   # Always build against Homebrew versions instead of system versions for consistency.
   depends_on "sqlite"
 
@@ -43,9 +43,15 @@ class Subversion18 < Formula
   depends_on "swig" if build.with?("perl") || build.with?("python") || build.with?("ruby")
 
   resource "serf" do
-    url "https://www.apache.org/dyn/closer.cgi?path=serf/serf-1.3.9.tar.bz2"
+    url "https://www.apache.org/dyn/closer.lua?path=serf/serf-1.3.9.tar.bz2"
     mirror "https://archive.apache.org/dist/serf/serf-1.3.9.tar.bz2"
     sha256 "549c2d21c577a8a9c0450facb5cca809f26591f048e466552240947bdf7a87cc"
+  end
+
+  # Python3-compatible SConstruct file for serf 1.3.9, from http://svn.apache.org/repos/asf/serf/branches/1.3.x/SConstruct
+  resource "serf-SConstruct" do
+    url "https://gist.githubusercontent.com/tholu/e9f0a9edf5a93820412808719117a2b0/raw/1f53eebcdce824cfe24a7fae3a3e3e9dc5239175/SConstruct"
+    sha256 "8012cc09469b2c284f915e8d2c8def9492d25e4a55a1abac316d2bbc4acf4917"
   end
 
   # Fix #23993 by stripping flags swig can't handle from SWIG_CPPFLAGS
@@ -80,6 +86,13 @@ class Subversion18 < Formula
     serf_prefix = libexec+"serf"
 
     resource("serf").stage do
+      # Fixing the SConstruct file of serf 1.3.9 to be Python3 compatible (https://github.com/tholu/homebrew-tap/issues/10)
+      resource("serf-SConstruct").stage do |stage|
+        @serf_sconstruct_path = Dir.pwd
+        stage.staging.retain!
+      end
+      cp "#{@serf_sconstruct_path}/SConstruct", "."
+
       # SConstruct merges in gssapi linkflags using scons's MergeFlags,
       # but that discards duplicate values - including the duplicate
       # values we want, like multiple -arch values for a universal build.
