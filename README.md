@@ -7,3 +7,7 @@ My own homebrew tap. Currently featuring `subversion18` (based on https://github
 brew tap tholu/tap
 brew install --with-unicode-path tholu/tap/subversion18
 ```
+
+## Older PHP Versions
+
+For older PHP versions, rather use https://github.com/shivammathur/homebrew-php - which is better maintained than this tap. I have removed my `php@5.6` formula from this repository.
