@@ -1,3 +1,6 @@
+# typed: false
+# frozen_string_literal: true
+
 class Subversion18 < Formula
   desc "Version control system"
   homepage "https://subversion.apache.org/"
@@ -6,9 +9,9 @@ class Subversion18 < Formula
   sha256 "f18f6e8309270982135aae54d96958f9ca6b93f8a4e746dd634b1b5b84edb346"
 
   bottle do
-    sha256 "c8e084464d3a30b65381af6cb2b225dd5511cb0f074a67a2fe6c89d66a1fae30" => :el_capitan
-    sha256 "0d80b06e7c27264ff0c533ad93f9a4ff0c9702d50740c87862d1368fe2c70bc5" => :yosemite
-    sha256 "2514644016e8f2a8feb77fc31b3620af91c3310cf501b8e402e3b972eef98f42" => :mavericks
+    sha256 el_capitan: "c8e084464d3a30b65381af6cb2b225dd5511cb0f074a67a2fe6c89d66a1fae30"
+    sha256 yosemite:   "0d80b06e7c27264ff0c533ad93f9a4ff0c9702d50740c87862d1368fe2c70bc5"
+    sha256 mavericks:  "2514644016e8f2a8feb77fc31b3620af91c3310cf501b8e402e3b972eef98f42"
   end
 
   option "with-unicode-path", "Build with support for OS X UTF-8-MAC filename"
@@ -43,7 +46,7 @@ class Subversion18 < Formula
   end
 
   def install
-    serf_prefix = libexec+"serf"
+    serf_prefix = "#{libexec}serf"
 
     resource("serf").stage do
       # Fixing the SConstruct file of serf 1.3.9 to be Python3 compatible (https://github.com/tholu/homebrew-tap/issues/10)
